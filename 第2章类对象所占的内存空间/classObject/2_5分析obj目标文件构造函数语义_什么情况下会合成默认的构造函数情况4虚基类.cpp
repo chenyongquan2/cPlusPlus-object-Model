@@ -28,7 +28,12 @@ public:
 
 class C :public A1, public A2//这里不需要virtual
 {
-	
+	/*如果我们自个有默认构造函数，编译器会给我们的构造函数增加代码。
+	C()
+	{
+		int a = 10;
+	}
+	*/
 };
 
 
