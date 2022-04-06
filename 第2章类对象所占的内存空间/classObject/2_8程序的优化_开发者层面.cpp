@@ -11,37 +11,37 @@ public:
 	int value1;
 	int value2;
 public:
-	CTemValue(int v1=0,int v2=0):value1(v1),value2(v2)//¹¹Ôìº¯Êý
+	CTemValue(int v1=0,int v2=0):value1(v1),value2(v2)//æž„é€ å‡½æ•°
 	{
-		cout << "µ÷ÓÃÁË¹¹Ôìº¯Êý" << endl;
+		cout << "è°ƒç”¨äº†æž„é€ å‡½æ•°" << endl;
 		cout << "value1=" << value1 << endl;
 		cout << "value2=" << value2 << endl;
 	}
 	CTemValue(const CTemValue &ct):value1(ct.value1),value2(ct.value2)
 	{
-		cout << "µ÷ÓÃÁË¿½±´¹¹Ôìº¯Êý" << endl;
+		cout << "è°ƒç”¨äº†æ‹·è´æž„é€ å‡½æ•°" << endl;
 		
 	}
 	virtual  ~CTemValue()
 	{
-		cout << "µ÷ÓÃÁËÎö¹¹º¯Êý" << endl;
+		cout << "è°ƒç”¨äº†æžæž„å‡½æ•°" << endl;
 	}
 };
 
-//¿ª·¢ÕßÊÓ½Ç
+//å¼€å‘è€…è§†è§’
 CTemValue DoubleMyself(CTemValue&t)
 {
-	//(1)¿ª·¢Õß²ãÃæ
+	//(1)å¼€å‘è€…å±‚é¢
 	//CTemValue tem;
 	//tem.value1 = t.value1 * 2;
 	//tem.value2 = t.value2 * 2;
-	//return  tem;//Éú³ÉÒ»¸öÁÙÊ±¶ÔÏó£¬È»ºóµ÷ÓÃ¿½±´¹¹Ôìº¯Êý°Ñtem¶ÔÏó¿½±´µ½Ö÷µ÷º¯ÊýµÄÄÚ´æ¿Õ¼ä¡£
+	//return  tem;//ç”Ÿæˆä¸€ä¸ªä¸´æ—¶å¯¹è±¡ä½œä¸ºè¿”å›žå€¼ï¼Œç„¶åŽè°ƒç”¨æ‹·è´æž„é€ å‡½æ•°æŠŠtemå¯¹è±¡æ‹·è´åˆ°ä¸»è°ƒå‡½æ•°çš„å†…å­˜ç©ºé—´ã€‚
 
-	//ÓÅ»¯ºó
-	return CTemValue(t.value1 * 2, t.value2 * 2);//Éú³ÉÒ»¸öÁÙÊ±¶ÔÏóÖ±½Ó·µ»Ø
+	//ä¼˜åŒ–åŽ
+	return CTemValue(t.value1 * 2, t.value2 * 2);//ç”Ÿæˆä¸€ä¸ªä¸´æ—¶å¯¹è±¡ç›´æŽ¥è¿”å›ž,å¯¹æ¯”ä¸Šé¢å°‘äº†ä¸€æ¬¡æ‹·è´æž„é€ 
 }
-//±àÒëÆ÷ÊÓ½Ç
-void DoubleMyself(CTemValue&obj,CTemValue&t)
+//ç¼–è¯‘å™¨è§†è§’
+void DoubleMyself(CTemValue&obj,CTemValue&t)//ç¼–è¯‘å™¨ä¼šæ’å…¥ç¬¬ä¸€ä¸ªå‚æ•°ã€‚
 {
 	obj.CTemValue::CTemValue(t.value1 * 2, t.value2 * 2);
 	return;
@@ -51,32 +51,32 @@ void DoubleMyself(CTemValue&obj,CTemValue&t)
 int main(void)
 {
 	CTemValue ts1(10, 20);
-	//CTemValue ts2=DoubleMyself(ts1);//Ê¹ÓÃÒ»¸ö¶ÔÏóÀ´½ÓÊÕ£¬¾Í»áÉÙÒ»¸öÎö¹¹º¯Êý
+	//CTemValue ts2=DoubleMyself(ts1);//ä½¿ç”¨ä¸€ä¸ªå¯¹è±¡æ¥æŽ¥æ”¶ï¼Œå°±ä¼šå°‘ä¸€ä¸ªæžæž„å‡½æ•°
 	DoubleMyself(ts1);
 	/*
-	 * ±àÒëÆ÷ÊÓ½Ç
+	 * ç¼–è¯‘å™¨è§†è§’
 	 * CTemValue ts1;
 	 * ts1.CTemValue::CTemValue(10,20);
 	 * CTemValue temObj;
 	 * DoubleMyself(temObj,ts1);
 	 */
 	/*
-	 µ÷ÓÃÁË¹¹Ôìº¯Êý
+	 è°ƒç”¨äº†æž„é€ å‡½æ•°
 	value1=10
 	value2=20
-	µ÷ÓÃÁË¹¹Ôìº¯Êý
+	è°ƒç”¨äº†æž„é€ å‡½æ•°
 	value1=20
 	value2=40
-	µ÷ÓÃÁËÎö¹¹º¯Êý
+	è°ƒç”¨äº†æžæž„å‡½æ•°
 	 */
 	
 	system("pause");
 	return 0;
 }
 /*
-* (1)¿ª·¢Õß²ãÃæ
+* (1)å¼€å‘è€…å±‚é¢
 * 
-* (2)±àÒëÆ÷²ãÃæ
+* (2)ç¼–è¯‘å™¨å±‚é¢
 * (3)
 * (4)
 * (5)
