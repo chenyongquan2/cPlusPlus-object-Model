@@ -8,24 +8,26 @@ class GrandFather
 {
 public:
 	int a=0;
+	//不会合成拷贝构造函数
 };
 
 class A1:virtual public GrandFather
 {
 public:
-	
+	//会合成拷贝构造函数，拷贝虚基类表指针
 };
 
 
 class A2 :virtual public GrandFather
 {
 public:
-
+	//会合成拷贝构造函数，拷贝虚基类表指针
 };
 
 class C:public A1,public A2
 {
 public:
+	//会合成拷贝构造函数，拷贝虚基类表指针
 	
 };
 
@@ -33,7 +35,7 @@ public:
 int main(void)
 {
 	C obj_c;
-	C obj_c2 = obj_c;//���ÿ������캯��
+	C obj_c2 = obj_c;//调用拷贝构造函数
 	/*
 	          Code
          COMDAT; sym= "public: __thiscall C::C(class C const &)" (??0C@@QAE@ABV0@@Z)
@@ -55,7 +57,7 @@ int main(void)
 	return 0;
 }
 /*
-* (1)���4���౾��û�п������캯�������Ǹ���̳��������
+* (1)情况4：类本身没有拷贝构造函数，但是该类继承自虚基类
 * 
 * (2)
 * (3)
