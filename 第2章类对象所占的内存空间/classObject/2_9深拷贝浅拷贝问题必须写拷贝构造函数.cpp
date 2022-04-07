@@ -10,28 +10,28 @@ class TEST
 public:
 	int m_i;
 	int *p;
-	//���캯��
+	//构造函数
 	TEST()
 	{
 		p = new int(23);
 		m_i = 0;
-		cout << "���캯��ִ��" << endl;
+		cout << "构造函数执行" << endl;
 	}
 	TEST(int value):m_i(value)
 	{
 		p = new int(value);
-		cout << "��һ�������Ĺ��캯��ִ��" << endl;
+		cout << "带一个参数的构造函数执行" << endl;
 		
 	}
 	~TEST()
 	{
 		delete p;
-		cout << "��������ִ��" << endl;
+		cout << "析构函数执行" << endl;
 	}
-	//�������캯��--û�п������캯���ᱨ�쳣
+	//拷贝构造函数--没有拷贝构造函数会报异常
 	TEST(const TEST&t)
 	{
-		this->p = new int(t.m_i);//�ֽڷ����ڴ�
+		this->p = new int(t.m_i);//自己分配内存
 		this->m_i = t.m_i;
 	}
 };
@@ -47,7 +47,8 @@ void playObj()
 int main(void)
 {
 	playObj();
-	//�������󣬻��ͷ�����pָ����ڴ�ռ䣬�ᱨ�쳣��
+	//当没有自定义拷贝构造函数时，系统会默认进行按位拷贝，导致p指针直接赋值，指向同一块内存。
+	//两个对象，会释放两次p指向的内存空间，会报异常。
 	
 	system("pause");
 	return 0;
