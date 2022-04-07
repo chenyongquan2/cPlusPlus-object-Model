@@ -16,34 +16,34 @@ public:
 
 class Derive :public Base
 {
-	//ÖØĞ´¸¸ÀàmyVirtualFunction02()º¯Êı
+	//é‡å†™çˆ¶ç±»myVirtualFunction02()å‡½æ•°
 	void myVirtualFunction02() override
 	{
-		cout << "ÕâÊÇ×ÓÀàÖØĞ´µÄmyVirtualFunction02º¯Êı" << endl;
+		cout << "è¿™æ˜¯å­ç±»é‡å†™çš„myVirtualFunction02å‡½æ•°" << endl;
 	}
 };
 
 int main(void)
 {
-	typedef void(*Func)(void);//¶¨ÒåÒ»¸öº¯ÊıÖ¸ÕëÀàĞÍ
+	typedef void(*Func)(void);//å®šä¹‰ä¸€ä¸ªå‡½æ•°æŒ‡é’ˆç±»å‹
 	Derive derive01;
 	long*pDe = (long*)(&derive01);
-	long* VptrDerive = (long*)(*pDe);//¶ÔÏópDeÖĞ´æ´¢µÄ¾ÍÊÇĞéº¯Êı±íÖ¸Õë¡£0x005c8b78 {virtualFunction.exe!const Derive::`vftable'} {6034243}
-	//long* VptrDerive = (long*)(derive01);//Ê¹ÓÃÉÏÃæÈıĞĞµÄÔ­ÒòÊÇ²»ÄÜÖ®¼ä°ÑÒ»¸öDerive¶ÔÏó×ª»»ÎªÖ¸Õë
+	long* VptrDerive = (long*)(*pDe);//å¯¹è±¡pDeä¸­å­˜å‚¨çš„å°±æ˜¯è™šå‡½æ•°è¡¨æŒ‡é’ˆã€‚0x005c8b78 {virtualFunction.exe!const Derive::`vftable'} {6034243}
+	//long* VptrDerive = (long*)(derive01);//ä½¿ç”¨ä¸Šé¢ä¸‰è¡Œçš„åŸå› æ˜¯ä¸èƒ½ä¹‹é—´æŠŠä¸€ä¸ªDeriveå¯¹è±¡è½¬æ¢ä¸ºæŒ‡é’ˆ
 	Func f1 = (Func)VptrDerive[0];//0x005c1343 {virtualFunction.exe!Base::myVirtualFunction01(void)}
 	Func f2 = (Func)VptrDerive[1];//0x005c1217 {virtualFunction.exe!Derive::myVirtualFunction02(void)}
 	Func f3 = (Func)VptrDerive[2];//0x005c1082 {virtualFunction.exe!Base::myVirtualFunction03(void)}
 	Func f4 = (Func)VptrDerive[3];//0x00000000
 	Func f5 = (Func)VptrDerive[4];
 
-	Derive derive02 = derive01;//µ÷ÓÃ¿½±´¹¹Ôìº¯Êı
+	Derive derive02 = derive01;//è°ƒç”¨æ‹·è´æ„é€ å‡½æ•°
 	long*pDe02 = (long*)(&derive02);
 	long* VptrDerive02 = (long*)(*pDe02);
-	//Á½¸ö¶ÔÏóÖ¸ÏòÀàµÄĞéº¯Êı±í
+	//ä¸¤ä¸ªå¯¹è±¡æŒ‡å‘ç±»çš„è™šå‡½æ•°è¡¨
 
-	Base base = derive01;//Ê¹ÓÃ×ÓÀà¸ø¸¸Àà¸³Öµ
+	Base base = derive01;//ä½¿ç”¨å­ç±»ç»™çˆ¶ç±»èµ‹å€¼
 	long* pBase = (long*)(&base);
-	long*vptrBase = (long*)(*pBase);//¸¸ÀàµÄĞéº¯Êı±íÖ¸Õë  0x00f7f9ac {6064948}
+	long*vptrBase = (long*)(*pBase);//çˆ¶ç±»çš„è™šå‡½æ•°è¡¨æŒ‡é’ˆ  0x00f7f9ac {6064948}
 	Func fb1 = (Func)vptrBase[0];//0x005c1343 {virtualFunction.exe!Base::myVirtualFunction01(void)}
 	Func fb2 = (Func)vptrBase[1];//0x005c116d {virtualFunction.exe!Base::myVirtualFunction02(void)}
 	Func fb3 = (Func)vptrBase[2];//0x005c1082 {virtualFunction.exe!Base::myVirtualFunction03(void)}
@@ -57,21 +57,24 @@ int main(void)
 }
 /*
 * (1)
-* Ê¹ÓÃ×ÓÀà¶ÔÏó³õÊ¼»¯¸¸Àà¶ÔÏó£¬¸¸Àà¶ÔÏóµÄĞéº¯Êı±í¸³Öµ¸ø×ÓÀàÁËÂğ£¿
-* ÇĞ¸î
-* ×ÓÀàÖĞÊôÓÚ¸¸ÀàµÄÄÇ²¿·Ö»á±»±àÒëÆ÷ÇĞ¸î£¨Çø·Ö£©³öÀ´£¬¿½±´¸ø¸¸Àà¶ÔÏó¡£
-* ËùÒÔBase base = derive01;×öÁË2¸öÊÂÇé
-*	1.Éú³ÉÒ»¸öbase¶ÔÏó£¬
-*	2.Ê¹ÓÃderive01À´³õÊ¼»¯base'¶ÔÏó£¬±àÒëÆ÷¸øÎÒÃÇ×öÁËÒ»¸öÑ¡Ôñ£¬derive01µÄĞéº¯ÊıÖ¸ÕëÖµ
-*	²¢Ã»ÓĞ¸²¸Çbase¶ÔÏóµÄ Ğéº¯Êı±íÖ¸ÕëÖµ£¬±àÒëÆ÷°ïÖúÎÒÃÇ×öÁËÕâÒ»µã¡£
-* (4)oo ÃæÏò¶ÔÏóºÍob»ùÓÚ¶ÔÏó¸ÅÄî
-*	1.c++Í¨¹ıÀàµÄÖ¸ÕëºÍÒıÓÃÀ´±íÊ¾¸¸Àà»òÕß×ÓÀà¶ÔÏóÀ´Ö§³Ö¶àÌ¬£¬ÕâÊÇÒ»¸ö³ÌĞòÉè¼Æ·ç¸ñ¡£
-*		Õâ¾ÍÊÇÎÒÃÇËµµÄÃæÏò¶ÔÏóobject-oriented model
-*	2.object-basedÒ²½ĞAD£¬³éÏóÊı¾İÄ£ĞÍ abstract datatype model
-*		²»Ö§³Ö¶àÌ¬£¬Ã»ÓĞĞéº¯Êı±í¡£ÒòÎªº¯Êıµ÷ÓÃµÄ½âÎö²»ĞèÒªÔËĞĞÊ±¾ö¶¨£¬ÔËĞĞËÙ¶È¸ü¿ì¡£
-*		³ÌĞòÔÚ±àÒëÆÚ¼ä¾Í½âÎöÍê³ÉÁËº¯ÊıµÄµ÷ÓÃ£¬¶ÔÏóÄÚ´æ¿Õ¼ä¸ü¼Ó½ô´Õ£¬ÒòÎªÃ»ÓĞĞéº¯Êı±íºÍĞéº¯Êı±íÖ¸Õë¡£
-*		µ«ÊÇOBµÄÉè¼ÆÁé»îĞÔ¾Í²î¡£
-*	c++¼ÈÖ§³ÖÃæÏò¶ÒÏÖ³ÌĞòÉè¼Æ£¨¼Ì³Ğ£¬¶àÌ¬£©£¬Ò²Ö§³Ö»ùÓÚ¶ÔÏó³ÌĞòÉè¼Æ¡£
+* ä½¿ç”¨å­ç±»å¯¹è±¡åˆå§‹åŒ–çˆ¶ç±»å¯¹è±¡ï¼Œçˆ¶ç±»å¯¹è±¡çš„è™šå‡½æ•°è¡¨èµ‹å€¼ç»™å­ç±»äº†å—ï¼Ÿ
+* åˆ‡å‰²
+* å­ç±»ä¸­å±äºçˆ¶ç±»çš„é‚£éƒ¨åˆ†ä¼šè¢«ç¼–è¯‘å™¨åˆ‡å‰²ï¼ˆåŒºåˆ†ï¼‰å‡ºæ¥ï¼Œæ‹·è´ç»™çˆ¶ç±»å¯¹è±¡ã€‚
+* æ‰€ä»¥Base base = derive01;åšäº†2ä¸ªäº‹æƒ…
+*	1.ç”Ÿæˆä¸€ä¸ªbaseå¯¹è±¡ï¼Œ
+*	2.ä½¿ç”¨derive01æ¥åˆå§‹åŒ–base'å¯¹è±¡ï¼Œç¼–è¯‘å™¨ç»™æˆ‘ä»¬åšäº†ä¸€ä¸ªé€‰æ‹©ï¼Œderive01çš„è™šå‡½æ•°æŒ‡é’ˆå€¼
+*	å¹¶æ²¡æœ‰è¦†ç›–baseå¯¹è±¡çš„ è™šå‡½æ•°è¡¨æŒ‡é’ˆå€¼ï¼Œç¼–è¯‘å™¨å¸®åŠ©æˆ‘ä»¬åšäº†è¿™ä¸€ç‚¹ã€‚
+* (4)oo é¢å‘å¯¹è±¡å’ŒobåŸºäºå¯¹è±¡æ¦‚å¿µ
+*	1.c++é€šè¿‡ç±»çš„æŒ‡é’ˆå’Œå¼•ç”¨æ¥è¡¨ç¤ºçˆ¶ç±»æˆ–è€…å­ç±»å¯¹è±¡æ¥æ”¯æŒå¤šæ€ï¼Œè¿™æ˜¯ä¸€ä¸ªç¨‹åºè®¾è®¡é£æ ¼ã€‚
+*		è¿™å°±æ˜¯æˆ‘ä»¬è¯´çš„é¢å‘å¯¹è±¡object-oriented model
+*	2.object-basedä¹Ÿå«ADT,æŠ½è±¡æ•°æ®æ¨¡å‹ abstract datatype model
+*		ä¸æ”¯æŒå¤šæ€ï¼Œæ²¡æœ‰è™šå‡½æ•°è¡¨ã€‚å› ä¸ºå‡½æ•°è°ƒç”¨çš„è§£æä¸éœ€è¦è¿è¡Œæ—¶å†³å®šï¼Œè¿è¡Œé€Ÿåº¦æ›´å¿«ã€‚
+		//Base *pBase = new Device();
+		//Base &base = device2;//ä¹Ÿæ˜¯å¤šæ€
+		//base.g();//æ‰“å°Device::G()
+*		ç¨‹åºåœ¨ç¼–è¯‘æœŸé—´å°±è§£æå®Œæˆäº†å‡½æ•°çš„è°ƒç”¨ï¼Œå¯¹è±¡å†…å­˜ç©ºé—´æ›´åŠ ç´§å‡‘ï¼Œå› ä¸ºæ²¡æœ‰è™šå‡½æ•°è¡¨å’Œè™šå‡½æ•°è¡¨æŒ‡é’ˆã€‚
+*		ä½†æ˜¯OBçš„è®¾è®¡çµæ´»æ€§å°±å·®ã€‚
+*	c++æ—¢æ”¯æŒé¢å‘å…‘ç°ç¨‹åºè®¾è®¡ï¼ˆç»§æ‰¿ï¼Œå¤šæ€ï¼‰(OOçš„)ï¼Œä¹Ÿæ”¯æŒåŸºäºå¯¹è±¡ç¨‹åºè®¾è®¡(OBçš„)ã€‚
 * (5) 
 * (6)(7)
 */
