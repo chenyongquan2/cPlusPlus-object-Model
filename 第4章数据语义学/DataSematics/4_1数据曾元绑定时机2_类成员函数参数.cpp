@@ -9,16 +9,18 @@ typedef string mytype;
 class A
 {
 public:
-	void myFunction(mytype temvalue);//ÕâÀïmytypeÊÇstringÀàĞÍ
+	//typedef int mytype;//æ”¾åˆ°ç±»çš„æœ€å‰é¢
+	void myFunction(mytype temvalue);//è¿™é‡Œmytypeæ˜¯stringç±»å‹ï¼Œå› ä¸ºå…ˆçœ‹åˆ°ä¸Šé¢çš„typedef string mytype;
 
 public:
 	typedef int mytype;
-	mytype m_value;//ÏÈ¶¨ÒåÀàĞÍ£¬ÕâÀïm_valueÊÇintÀàĞÍ
+	mytype m_value;//å…ˆå®šä¹‰ç±»å‹ï¼Œè¿™é‡Œm_valueæ˜¯intç±»å‹
 };
 
 void A::myFunction(::mytype temvalue)
+//void A::myFunction(mytype temvalue) è¿™é‡Œè®¤ä¸ºæ˜¯intç±»å‹ã€‚
 {
-	//m_value = temvalue;//error ½«stringÀàĞÍ×ª»»ÎªintÀàĞÍ0
+	//m_value = temvalue;//error å°†stringç±»å‹è½¬æ¢ä¸ºintç±»å‹0
 }
 
 
@@ -30,9 +32,11 @@ int main(void)
 
 
 /*
-* (1)½áÂÛ£º¶ÔÓÚ³ÉÔ±º¯Êı²ÎÊı£º£¬ÊÇÔÚµÚÒ»´ÎÓö¼ûÕû¸ömytypeÀàĞÍµÄÊ±ºò±»¾ö¶¨µÄ¡£
-* ËùÒÔµÚÒ»´ÎÓö¼ûmytpyeµÄÊ±ºò£¬±àÒëÆ÷¿´µ½ÁËtypedef string mytype;£¬¾Í°Ñ²ÎÊıµ±×÷stringÀàĞÍ¡£
-* ½áÂÛ£ºÎªÁËÔÚÀàÖĞ¾¡Ôç¿´µ½mytypeÀàĞÍ£¬ÀàĞÍ¶¨ÒåÓï¾äÒ»¶¨Òª¶¨Òåµ½Àà×î¿ªÊ¼µÄÎ»ÖÃ
+* (1)ç»“è®ºï¼šå¯¹äºæˆå‘˜å‡½æ•°å‚æ•°ï¼šï¼Œæ˜¯åœ¨ç¬¬ä¸€æ¬¡é‡è§æ•´ä¸ªmytypeç±»å‹çš„æ—¶å€™è¢«å†³å®šçš„ã€‚
+* æ‰€ä»¥ç¬¬ä¸€æ¬¡é‡è§mytpyeçš„æ—¶å€™ï¼Œç¼–è¯‘å™¨çœ‹åˆ°äº†typedef string mytype;ï¼Œè¿˜æ²¡çœ‹åˆ°ç±»ä¸­çš„typedef int mytype;
+* å°±æŠŠå‚æ•°å½“ä½œstringç±»å‹ã€‚
+* ç»“è®ºï¼šä¸ºäº†åœ¨ç±»ä¸­å°½æ—©çœ‹åˆ°mytypeç±»å‹ï¼Œç±»å‹å®šä¹‰è¯­å¥ä¸€å®šè¦å®šä¹‰åˆ°ç±»æœ€å¼€å§‹çš„ä½ç½®
+* é‚£åè¾¹çš„æˆå‘˜å‡½æ•°ç¬¬ä¸€æ¬¡é‡åˆ°è¿™ä¸ªç±»å‹mytypeçš„æ—¶å€™ï¼Œå®ƒå°±æœ¬ç€æœ€è¿‘ç¢°åˆ°çš„ç±»å‹çš„åŸåˆ™æ¥åº”ç”¨æœ€è¿‘ç¢°åˆ°çš„ç±»å‹ã€‚
 * (2)
 * (3)
 * (4)
