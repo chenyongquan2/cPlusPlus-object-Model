@@ -45,7 +45,7 @@ int main()
 	printf("MYACLS::m_bi = %d\n", &MYACLS::m_bi);//4
 	printf("MYACLS::m_i = %d\n", &MYACLS::m_i);//8
 	printf("MYACLS::m_j = %d\n", &MYACLS::m_j);//12
-	//Base类有虚函数时候是 4 8  12  没有虚函数的时候是0 8 12(这时候偏移值已经不能说明问题了)
+	//Base类有虚函数时候是 4 8  12  没有虚函数的时候是0 8 12(因为这个m_bi是相对于Base类的this指针而言的。见下一节。)
 
 	MYACLS myobj;//这里插入断点，跳到构造函数，查看反汇编代码，可以看到虚函数表指针指向虚函数的代码
 	myobj.m_i = 3;
