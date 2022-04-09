@@ -9,99 +9,100 @@ public:
 	int m_i;
 	void myfunc(int abc)
 	{
-		//m_i += abc; //������Ҫ�õ�thisָ�룬��thisָ��Ϊ�գ���ᱨ���쳣
+		//m_i += abc; //这里需要用到this指针，而this指针为空，则会报告异常
 		mystfunc();
 	}
 	
 	virtual void myvirfunc()
 	{
-		printf("myvirfunc()������,this = %p\n", this);
-		//myvirfunc2(); ��Ȼ���麯����ָ�����(�鿴�����)
-		MYACLS::myvirfunc2(); //ֱ�ӵ����麯����Ч�ʸ��ߡ�����д��ѹ����������ƣ�����ͨ����ѯ�麯����������
-							  //����������::�麯����()��ȷ�����麯���ķ�ʽ�ȼ���ֱ�ӵ���һ����ͨ������
+		printf("myvirfunc()被调用,this = %p\n", this);
+		//myvirfunc2(); 居然走虚函数表指针调用(查看反汇编)
+		MYACLS::myvirfunc2(); //直接调用虚函数(虚函数也是像普通函数一样，有个函数入口地址的)，效率更高。这种写法压制了虚拟机制，不再通过查询虚函数表来调用
+							  //这种用类名::虚函数名()明确调用虚函数的方式等价于直接调用一个普通函数；
 	}
 	
 	virtual void myvirfunc2()
 	{
-		printf("myvirfunc2()������,this = %p\n", this);
+		printf("myvirfunc2()被调用,this = %p\n", this);
 	}
 
-	//��̬��Ա����
+	//静态成员函数
 	//static int m_si;
-	static void mystfunc() //����Ҫthis����
+	static void mystfunc() //不需要this参数(因为这货是跟着类走的)
 	{
-		printf("mystfunc()������\n");
+		printf("mystfunc()被调用\n");
 		//m_si = 1;
 	}
 };
 
 int main()
 {
-	//һ�����Ա�������麯�������÷�ʽ
+	//一：虚成员函数（虚函数）调用方式
 	MYACLS myacls;
-	myacls.myvirfunc(); //�ö�������麯�������������ͨ��Ա����һ��(��������),����Ҫͨ���麯����
+	myacls.myvirfunc(); //用对象调用虚函数，就像调用普通成员函数一样(三章六节),不需要通过虚函数表
 
 	MYACLS *pmyacls = new MYACLS();
-	pmyacls->myvirfunc(); //Ҫͨ���麯����ָ������麯������ͨ���麯�����ںõ��麯������ڵ�ַ����ɶ��麯���ĵ���
+	pmyacls->myvirfunc(); //要通过虚函数表指针查找虚函数表，通过虚函数表在好到虚函数的入口地址，完成对虚函数的调用
 
-	/*�������ӽ�
+	/*编译器视角
 	 (*pmyacls->vptr[0])(pmyacls);
-	 *a)vptr�������������ɵ��麯����ָ�룬ָ���麯����
-	 *b)[0] �麯�����е�һ�����myvirfunc()��ַ
-	 *c)����һ��������ȥ������this��Ҳ�Ǳ��������ӵ�
-	 *d)*�͵õ����麯���ĵ�ַ��
-	 �ܽ᣺���Ա����Ҳ��һ���̶����ڴ��ַ���ڱ����ʱ����Ѿ�ȷ����ͨ������ֱ�ӵ����麯�����ǲ�ͨ���麯������
-		ͨ��ָ��������õ����麯�������麯������
+	 *a)vptr，编译器给生成的虚函数表指针，指向虚函数表
+	 *b)[0] 虚函数表中第一项。代表myvirfunc()地址
+	 *c)传递一个参数进去，就是this，也是编译器给加的
+	 *d)*就得到了虚函数的地址；
+	 总结：虚成员函数也有一个固定的内存地址(如同普通的成员函数一样)，在编译的时候就已经确定。通过对象直接调用虚函数，是不通过虚函数表。
+		通过指针或者引用调用虚函数是走虚函数表。
 	 */
 
-	printf("MYACLS::myvirfunc2�麯���ĵ�ַΪ%p\n", &MYACLS::myvirfunc2);
+	printf("MYACLS::myvirfunc2虚函数的地址为%p\n", &MYACLS::myvirfunc2);
 	/*
-		myvirfunc()������,this = 00EFFC90
-		myvirfunc2()������,this = 00EFFC90
-		myvirfunc()������,this = 010E4AB8
-		myvirfunc2()������,this = 010E4AB8
-		MYACLS::myvirfunc2�麯���ĵ�ַΪ00301415
+		myvirfunc()被调用,this = 00EFFC90
+		myvirfunc2()被调用,this = 00EFFC90
+		myvirfunc()被调用,this = 010E4AB8
+		myvirfunc2()被调用,this = 010E4AB8
+		MYACLS::myvirfunc2虚函数的地址为00301415
 	 */
 
 
-	//������̬��Ա�������÷�ʽ
+	//二：静态成员函数调用方式
 	cout << "--------------------" << endl;
-	//ͨ�����󣬶���ָ�룬�������þ�̬��Ա������
+	//通过对象，对象指针，类名调用静态成员函数。
 	myacls.mystfunc();
 	pmyacls->mystfunc();
 	MYACLS::mystfunc();
 
-	//���������У�
+	//编译器眼中：
 	//_ZN6MYACLS8mystfuncEv();
 	//_ZN6MYACLS8mystfuncEv();
 	//_ZN6MYACLS8mystfuncEv();
 
-	/*��Ҫ��
-	 *(1)�ѽṹ��Ԫ��MYACLS���ڴ���䷽ʽӳ�䵽�ڴ�λ0��λ��
-	 *(2)((MYACLS *)0)����MYACLS�����ͽ���0��ʼ���ڴ�ռ�����ݡ�0���� pmyacls-pmyacls���ƶ���0��ַ�ռ�
+	/*重要：
+	 *(1)把结构体元素MYACLS的内存分配方式映射到内存位0的位置
+	 *(2)((MYACLS *)0)按照MYACLS的类型解释0开始的内存空间的内容。0来自 pmyacls-pmyacls，移动到0地址空间
 	 */
-	((MYACLS *)0)->mystfunc();  //�ܹ��������þ�̬��Ա��������Ϊ����Ҫ����thisָ�룬�������κηǾ�̬��Ա��������������Ҫthisָ�롣
+	((MYACLS *)0)->mystfunc();  //能够正常调用静态成员函数，因为不需要传递this指针，因为不操作任何非静态成员变量，本身不需要this指针。
+					//而对于普通成员函数或者虚函数，如果函数里面需要对成员变量进行操作，也就是说需要用到this指针的场合这里运行会报异常。	
 	cout << "*******************" << endl;
-	//((MYACLS *)0)->myfunc(12);  //���myfunc()�������治�Գ�Ա�������в�����Ҳ���ǲ���thisָ�룬���Ե��á�
-	//Ϊʲô��Ƴ���ô��ֵķ�������--��Щ��Ա����ϣ��֧�ֶ����������֮��Ĵ�ȡ������
+	//((MYACLS *)0)->myfunc(12);  //如果myfunc()普通函数里面不对成员变量进行操作，也就是不用this指针，可以调用(虚函数当然就不行了，因为需要通过this指针访问虚函数表指针。)。
+	//为什么设计出这么奇怪的方法？？--有些成员函数希望支持独立于类对象之外的存取操作；
 
 	myacls.myfunc(12);
 	pmyacls->myfunc(12);
 
-	/*���ۣ�
-	 *��̬��Ա��������
-	 *a)��̬��Ա����û��thisָ�룬�������Ҫ
-	 *b)�޷�ֱ�Ӵ�ȡ������ͨ�ķǾ�̬��Ա��������̬��Ա����ͨ��thisָ���ȡ��
-	 *c)��̬��Ա����������ƨ�ɺ�ʹ��const��Ҳ��������Ϊvirtual
-	 *d)�������������ã�������һ��Ҫ���������á�����ʹ������������ָ�룬�����֣������á�
-	 *e)��̬��Ա������ͬ�ڷǳ�Ա�������е���Ҫ�ṩ�ص����������ֳ��ϣ����Խ���̬��Ա������Ϊ�ص�������
+	/*结论：
+	 *静态成员函数特性
+	 *a)静态成员函数没有this指针，这点最重要
+	 *b)无法直接存取类中普通的非静态成员变量，普通成员变量通过this指针存取的
+	 *c)静态成员函数不能在屁股后使用const，也不能设置为virtual
+	 *d)可以用类对象调用，但不非一定要用类对象调用。可以使用类对象，类对象指针，类名字，来调用。
+	 *e)静态成员函数等同于非成员函数，有的需要提供回调函数的这种场合，可以将静态成员函数作为回调函数；
 	 */
 
-	printf("MYACLS::mystfunc()��ַ = %p\n", MYACLS::mystfunc);
+	printf("MYACLS::mystfunc()地址 = %p\n", MYACLS::mystfunc);
 	/*
-	 mystfunc()������
-	 mystfunc()������
-	 MYACLS::mystfunc()��ַ = 00FA122B
+	 mystfunc()被调用
+	 mystfunc()被调用
+	 MYACLS::mystfunc()地址 = 00FA122B
 	 */
 
 
