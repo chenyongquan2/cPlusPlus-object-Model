@@ -6,8 +6,8 @@ using namespace std;
 
 
 
-	//�����̳й�ϵ������ӣ��麯�����µĿ�������
-	//�麯���Ĵ��ڵ��������һ���麯�����������������һ���麯����ָ�룬�ڹ��캯�������Ӵ��룬���麯����ָ��ָ���麯������
+	//三：继承关系深度增加，虚函数导致的开销增加
+	//虚函数的存在导致类存在一个虚函数表，类对象增加了一个虚函数表指针，在构造函数(即使没有也会合成)中添加代码，让虚函数表指针指向虚函数表。
 	class A
 	{
 	public:
@@ -50,7 +50,7 @@ using namespace std;
 	00DF2063  mov         ecx,dword ptr [this]  
 	00DF2066  call        B::B (0DF1433h)  
 	00DF206B  mov         eax,dword ptr [this]  
-	00DF206E  mov         dword ptr [eax],offset C::`vftable' (0DF9B4Ch)  //�麯����ָ�븳ֵ
+	00DF206E  mov         dword ptr [eax],offset C::`vftable' (0DF9B4Ch)  //虚函数表指针赋值
 				cout << "C::C()" << endl;
 	00DF2074  mov         esi,esp  
 	00DF2076  push        offset std::endl<char,std::char_traits<char> > (0DF109Bh)  
