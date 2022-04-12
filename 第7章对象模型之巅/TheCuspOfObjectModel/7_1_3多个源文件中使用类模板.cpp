@@ -1,8 +1,9 @@
 #include<iostream>
 #include "MyTemplate.h"
 using namespace std;
-template class MyClass<int>;//��ʾʵ������ģ��
-template void MyClass<int>::myFunction02()const;//ʵ��������ĳ�Ա����
+template class MyClass<int>;//显示实例化类模板，这种语法会把模板类的所有内容都实例化出来
+template void MyClass<int>::myFunction02()const;//实例化具体的成员函数，
+//一般不需要显示实例化，通常在比较大的类里面显示指定哪部分需要实例化。
 
 
 
@@ -18,11 +19,11 @@ int main(void)
 	return 0;
 }
 /*
- * (1)7_1_3���Դ�ļ���ʹ����ģ��
- * һ�����ļ������õ���ģ�壬���Է���.h�ļ���
- * �ڶ��cpp���ɵ�obj�ļ��У����ܲ�������ظ���ʵ�����࣬�������ӵ�ʱ��ָ�ӱ���һ��MyClass<int>���ʵ�塣
+ * (1)7_1_3多个源文件中使用类模板
+ * 一般多个文件都会用到类模板，所以放在.h文件中
+ * 在多个cpp生成的obj文件中，可能产生多个重复的实例化类，但是链接的时候指挥保留一个MyClass<int>类的实体。
  *
- * 1.1�麯����ʵ����
- *	Ϊʲô�麯��û�б����ã�Ҳ�ᱻʵ������������
- *	��Ϊ���麯�����������ͻ�����麯�������麯���������麯���ĵ�ַ��Ҳ����ζ��Ҫ֪���麯���ĵ�ַ����
+ * 1.1虚函数的实例化
+ *	为什么虚函数没有被调用，也会被实例化出来？？
+ *	因为有虚函数，编译器就会产生虚函数表，虚函数表项是虚函数的地址，也就意味着要知道虚函数的地址，。
  */
