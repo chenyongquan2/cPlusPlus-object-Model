@@ -2,16 +2,16 @@
 
 using namespace std;
 
-//���ܱ��̳е���
+//不能被继承的类
 class A
 {
 private:
 	A(){}
-	friend class B;//����ϣ����B�ܳ�Ϊһ�����ܱ��̳е���
+	friend class B;//我们希望类B能成为一个不能被继承的类(而且B是A的友元类，所以B能调用A的私有方法与成员)
 };
 
-class B:virtual public A//��C::C(void)�� : ����������ɾ���ĺ���
-//class B : public A//��C::C(void)�� : ����������ɾ���ĺ���	
+class B:virtual public A//“C::C(void)” : 尝试引用已删除的函数
+//class B : public A//“C::C(void)” : 尝试引用已删除的函数	
 
 {
 public:
@@ -26,15 +26,15 @@ public:
 };
 void myFunction01()
 {
-	//A obj_a;//A�Ĺ��캯����˽�еģ�error
-	B obj_b;//B��Ĺ��캯��ȥ����A��Ĺ��캯����B��A�����Ԫ��
+	//A obj_a;//A的构造函数是私有的，error
+	B obj_b;//B类的构造函数去调用A类的构造函数，B是A类的友元类
 	obj_b.m_b = 12;
 	//C obj_c;
 	//obj_c.m_c = 20;
 
 	/*
-	 * ���B������̳�A��C����B�Ĺ��캯����B����A�Ĺ��캯����
-	 * ���B��̳���A����ôA��Ĺ��캯��ʱC�������������ã���C���ܵ���A��private���캯�����ᱨ��
+	 * 如果B不是虚继承A，C调用B的构造函数，B调用A的构造函数，
+	 * 如果B虚继承类A，那么A类的构造函数时C类孙子类来调用，而C不能调用A的private构造函数，会报错
 	 */
 	
 }
@@ -46,8 +46,8 @@ int main(void)
 	return 0;
 }
 /*
- * 1.7_2_1���ܱ��̳е���
- *		c++11�е�final�ؼ��֣�������ùؼ�����ô���಻�ܱ��̳У���
- *		��Ԫ����+��̳�ʵ�ֲ��ܱ��̳е���
- *		�����ã���Ԫ�����ƻ���ķ�װ�ԣ���̳����ıȽϴ�
+ * 1.7_2_1不能被继承的类
+ *		c++11中的final关键字就能解决，如果不用关键字怎么让类不能被继承？？
+ *		友元函数+虚继承实现不能被继承的类
+ *		副作用：友元函数破坏类的封装性，虚继承消耗比较大
  */
